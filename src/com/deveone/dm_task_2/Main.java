@@ -15,64 +15,31 @@ public class Main {
         int[] numbers = readArrFromFile("input.txt");
 
         if (numbers.length == 0) {
-            System.err.println("Number array is empty");
+            System.err.println("\nNumber array is empty :|");
             return;
         }
 
-        quickSort(numbers);
+        insertionSort(numbers);
 
         writeAnswerToFile("output.txt", numbers, comparisons);
     }
 
-    private static void quickSort(int[] numbers) {
-        comparisons = 0;
-        quickSort(numbers, 0, numbers.length - 1);
-    }
+    private static void insertionSort(int[] array) {
+        for (int left = 0; left < array.length; left++) {
+            int value = array[left];
 
-    /* Тут считаются не все сравнения, проводимые сортировкой.
-    Как я понимаю, должны считаться именно прямые сравнения чисел массива,
-    поэтмоу только их и считаем, а сравнения индексов игнорируем.
-    Но на всякий случай оставил закомментированные счётчики остальных сравнений. */
-    private static void quickSort(int[] numbers, int leftBorder, int rightBorder) {
-        int leftMarker = leftBorder;
-        int rightMarker = rightBorder;
-        int pivot = numbers[(leftBorder + rightBorder) / 2];
+            int i = left - 1;
 
-        do {
-            while (numbers[leftMarker] < pivot) {
-                leftMarker++;
+            for (; i >= 0; i--) {
                 comparisons++;
-            }
-
-            while (numbers[rightMarker] > pivot) {
-                rightMarker--;
-                comparisons++;
-            }
-
-//            comparisons++;
-            if (leftMarker <= rightMarker) {
-//                comparisons++;
-                if (leftMarker < rightMarker) {
-                    int tmp = numbers[leftMarker];
-                    numbers[leftMarker] = numbers[rightMarker];
-                    numbers[rightMarker] = tmp;
+                if (value < array[i]) {
+                    array[i + 1] = array[i];
+                } else {
+                    break;
                 }
-
-                leftMarker++;
-                rightMarker--;
             }
 
-//            comparisons++;
-        } while (leftMarker <= rightMarker);
-
-        if (leftMarker < rightBorder) {
-//            comparisons++;
-            quickSort(numbers, leftMarker, rightBorder);
-        }
-
-        if (leftBorder < rightMarker) {
-//            comparisons++;
-            quickSort(numbers, leftBorder, rightMarker);
+            array[i + 1] = value;
         }
     }
 
